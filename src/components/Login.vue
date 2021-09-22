@@ -45,8 +45,8 @@ export default {
   data() {
     return {
       loginFor: {
-        username: "zs",
-        password: "123",
+        username: "admin",
+        password: "123456",
       },
       rules: {
         username: [
