@@ -87,7 +87,6 @@ export default {
       this.menuList = res.data
     },
     getItem(e) {
-      console.log(e)
       window.sessionStorage.setItem("dePath", "/" + e)
     },
   },
