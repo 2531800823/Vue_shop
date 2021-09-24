@@ -261,7 +261,7 @@ export default {
         if (!val) return
         // 发起用户请求
         console.log(this.ruleForm)
-        const { data: res } = await this.$http.post("users", this.ruleForm)
+        const { data: res } = await this.$http.post("git users", this.ruleForm)
         console.log(res)
         if (res.meta.status !== 201) return this.$message.error("添加用户失败")
         this.$message.success("添加成功")
