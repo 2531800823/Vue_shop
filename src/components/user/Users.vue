@@ -48,7 +48,11 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <!-- 修改 -->
-            <el-button type="primary" icon="el-icon-edit"></el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-edit"
+              @click="editUser = true"
+            ></el-button>
             <!-- 删除 -->
             <el-button type="warning" icon="el-icon-delete"></el-button>
             <!-- 修改状态 -->
@@ -106,6 +110,34 @@
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="addUser">确 定</el-button>
           <el-button @click="dialogVisible = false">取 消</el-button>
+        </span>
+      </el-dialog>
+
+      <!-- 修改用户对话框 -->
+      <el-dialog title="修改用户" :visible.sync="editUser" width="50%">
+        <!-- 表单 -->
+        <!-- <el-form
+          :model="ruleForm"
+          :rules="rules"
+          ref="ruleFormRef"
+          label-width="100px"
+        >
+          <el-form-item label="用户名" prop="username">
+            <el-input v-model="ruleForm.username"></el-input>
+          </el-form-item>
+          <el-form-item label="密码" prop="password">
+            <el-input v-model="ruleForm.password" type="password"></el-input>
+          </el-form-item>
+          <el-form-item label="邮箱" prop="email">
+            <el-input v-model="ruleForm.email"></el-input>
+          </el-form-item>
+          <el-form-item label="手机" prop="mobile">
+            <el-input v-model="ruleForm.mobile"></el-input>
+          </el-form-item>
+        </el-form> -->
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="editUser = false">确 定</el-button>
+          <el-button @click="editUser = false">取 消</el-button>
         </span>
       </el-dialog>
     </el-card>
@@ -186,6 +218,8 @@ export default {
           },
         ],
       },
+      // 修改用户对话框
+      editUser: false,
     }
   },
   methods: {
