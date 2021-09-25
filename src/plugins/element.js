@@ -24,8 +24,11 @@ import {
     Tooltip,
     Pagination,
     Dialog,
+    MessageBox,
+    Tag,
 } from 'element-ui';
 
+Vue.use(Tag)
 Vue.use(Dialog)
 Vue.use(Pagination)
 Vue.use(Tooltip)
@@ -50,3 +53,4 @@ Vue.use(Card)
 Vue.use(Row)
 Vue.use(Col)
 Vue.prototype.$message = Message
+Vue.prototype.$confirm = MessageBox.confirm
