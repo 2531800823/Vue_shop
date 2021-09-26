@@ -66,7 +66,11 @@
               placement="top"
               :enterable="false"
             >
-              <el-button type="danger" icon="el-icon-setting"></el-button>
+              <el-button
+                type="danger"
+                icon="el-icon-setting"
+                @click="updataJuese(scope.row)"
+              ></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -144,6 +148,27 @@
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="editUserInfo">确 定</el-button>
           <el-button @click="editUser = false">取 消</el-button>
+        </span>
+      </el-dialog>
+
+      <!-- 修改角色的对话框 -->
+      <el-dialog title="分配角色" :visible.sync="updataJue" width="30%">
+        <div>
+          <p>当前的用户：{{ updataInfo.username }}</p>
+          <p>当前的角色：{{ updataInfo.role_name }}</p>
+        </div>
+        <el-select v-model="selectConent" placeholder="请选择">
+          <el-option
+            v-for="item in rouleList"
+            :key="item.id"
+            :label="item.roleName"
+            :value="item.id"
+          >
+          </el-option>
+        </el-select>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="updataJue = false">取 消</el-button>
+          <el-button type="primary" @click="reloInfo">确 定</el-button>
         </span>
       </el-dialog>
     </el-card>
@@ -228,6 +253,13 @@ export default {
       editUser: false,
       // 查询到的用户信息
       editForm: {},
+      // 修改角色的对话框
+      updataJue: false,
+      // 要修改用户的表单
+      updataInfo: {},
+      // 角色列表
+      rouleList: [],
+      selectConent: "",
     }
   },
   methods: {
@@ -300,14 +332,13 @@ export default {
             mobile: this.editForm.mobile,
           }
         )
-        if (res.meta.status !== 200) return this.$message.error("更新失败")
+        if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
         this.$message.success("更新成功")
         this.editUser = false
       })
     },
     // 删除用户
     async editDelete(id) {
-      console.log(id)
       const confirm = await this.$confirm(
         "此操作将永久删除该用户, 是否继续?",
         "提示",
@@ -325,6 +356,32 @@ export default {
       const { data: res } = await this.$http.delete("users/" + id)
       if (res.meta.status !== 200) return this.$message.error("删除失败")
       this.$message.success("删除成功")
+      this.getList()
+    },
+    // 点击修改用户角色
+    async updataJuese(user) {
+      this.updataJue = true
+      this.updataInfo = user
+      const { data: res } = await this.$http.get("roles")
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+
+      this.rouleList = res.data
+    },
+    // 提交修改角色
+    async reloInfo() {
+      if (!this.selectConent) return (this.updataJue = false)
+
+      const { data: res } = await this.$http.put(
+        `users/${this.updataInfo.id}/role`,
+        {
+          rid: this.selectConent,
+        }
+      )
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.$message.success("设置角色成功")
+      this.updataJue = false
+      this.selectConent = ""
+      this.updataInfo = {}
       this.getList()
     },
   },
