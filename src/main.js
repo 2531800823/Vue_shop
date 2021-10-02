@@ -17,7 +17,23 @@ axios.interceptors.request.use(config => {
 })
 Vue.prototype.$http = axios
 Vue.config.productionTip = false
-Vue.component('tree-table',Treetable)
+// 添加的树形表格
+Vue.component('tree-table', Treetable)
+// 日期过滤器
+Vue.filter('dataFilter', function (val) {
+  const date = new Date(val);
+
+  const n = date.getFullYear();
+  const y = (date.getMonth() + 1+'').padStart(2,'0')
+  const r = (date.getDate()+'').padStart(2,'0')
+
+  const s = (date.getHours()+'').padStart(2, '0')
+  const f = (date.getMinutes()+'').padStart(2, '0')
+  const m = (date.getSeconds()+'').padStart(2, '0')
+
+
+  return `${n}-${y}-${r} ${s}:${f}:${m}`
+})
 
 new Vue({
   render: h => h(App),
